@@ -38,6 +38,7 @@ LDAP:
     usrpass: *
     base_dc: cn
     base_dn: *
+    retries: 2
 ```
 > namekox run ping
 ```shell script
@@ -61,4 +62,28 @@ LDAP:
     "data": "u:CN\\namekox",
     "call_id": "ef5a4c26-5eb1-4f71-92a7-962f4596c063"
 }
+```
+
+# Debug
+> config.yaml
+```yaml
+CONTEXT:
+  - namekox_ldap.cli.subctx.ldap:Ldap
+LDAP:
+  ping:
+    servers:
+      - host: ldaps://*.*.*.*:636
+      - host: ldaps://*.*.*.*:636
+    usrname: namekox
+    usrpass: *
+    base_dc: cn
+    base_dn: *
+    retries: 2
+```
+> namekox shell
+```shell script
+Namekox Python 2.7.16 (default, Dec 13 2019, 18:00:32)
+[GCC 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.32.4) (-macos10.15-objc-s shell on darwin
+In [1]: nx.ldap.proxy('ping').acquire().extend.standard.who_am_i()
+Out[1]: u'u:CN\\namekox'
 ```
